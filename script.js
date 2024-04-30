@@ -44,11 +44,4 @@ numberBtns.forEach(el=>
     })
 )
 
-operatorBtns.forEach(el=> 
-    el.addEventListener('click', (el)=> {
-        if (firstNumber !== 0 && operator === 0) {
-            operator = el.target.textContent
-            display(operator)
-        } 
     })
-)
