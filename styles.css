@@ -53,6 +53,6 @@ body {
     flex: 1;
 }
 
-.operator {
+.operator, .equal, .clear {
  flex: 1;
 }

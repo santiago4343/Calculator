@@ -1,54 +1,99 @@
 const numberBtns = document.querySelectorAll('.numbers')
 const operatorBtns = document.querySelectorAll('.operator')
 const displayer = document.querySelector('#displayer')
+const equalBtn = document.querySelector('.equal')
+const clearBtn = document.querySelector('.clear')
 
-let firstNumber = 0;
-let operator = 0;
-let secondNumber = 0;
-
-const operate = function(num1, operator, num2) {
-        
-}
+let firstNumber;
+let operator;
+let secondNumber;
 
 const add = function(num1, num2) {
-    return num1+num2
+    let answer = num1+num2
+    return displayAnswer(answer)
 }
 
 const subtract = function(num1, num2) {
-    return num1-num2
+    let answer = num1-num2
+    return displayAnswer(answer)
 }
 
 const multiply = function(num1, num2) {
-    return num1*num2
+    let answer = num1*num2
+    return displayAnswer(answer)
 }
 
 const divide = function(num1, num2) {
-    return num1/num2
+    let answer = num1/num2
+    return displayAnswer(answer)
 }
 
 function display(character) {
-    if (displayer.textContent !== '') { 
-        displayer.textContent + character
-    } else {displayer.textContent + character}
+    displayer.textContent = character.join('')
 }
+
+function displayAnswer(answer) {
+    displayer.textContent = answer
+}
+
+let equation = []
 
 numberBtns.forEach(el=> 
     el.addEventListener('click', (el)=> {
-        if (firstNumber === 0 && operator === 0 || firstNumber !== el.target.textContent) {
+        if (firstNumber === undefined && operator === undefined || firstNumber !== el.target.textContent && operator === undefined) {
             firstNumber = el.target.textContent
-            display(firstNumber)
-        } else if (firstNumber !== 0 && operator !== 0) {
+            equation[0] = firstNumber
+            display(equation)
+        } else if (firstNumber !== undefined && operator !== undefined) {
             secondNumber = el.target.textContent
-            display(secondNumber)
+            equation[2] = secondNumber
+            display(equation)
         }
     })
 )
 
 operatorBtns.forEach(el=> 
     el.addEventListener('click', (el)=> {
-        if (firstNumber !== 0 && operator === 0) {
+        if (firstNumber !== undefined && operator === undefined) {
             operator = el.target.textContent
-            display(operator)
+            equation[1] = operator
+            display(equation)
         } 
     })
 )
+
+function clearEquation() {
+    equation = []
+    firstNumber = undefined
+    operator = undefined
+    secondNumber = undefined
+}
+
+function calculateEquation() {
+    if (equation[1] === '+') {
+        add(+equation[0], +equation[2])
+        return clearEquation()
+    } else if (equation[1] === '*') {
+        multiply(+equation[0], +equation[2])
+        return clearEquation()
+    } else if (equation[1] === '/') {
+        divide(+equation[0], +equation[2])
+        return clearEquation()
+    } else if (equation[1] === '-') {
+        subtract(+equation[0], +equation[2])
+        return clearEquation()
+    }
+    
+}
+
+function clear() {
+    equation = []
+    displayer.textContent = ''
+    firstNumber = undefined
+    operator = undefined
+    secondNumber = undefined
+}
+
+equalBtn.addEventListener('click', calculateEquation)
+
+clearBtn.addEventListener('click', clear)
